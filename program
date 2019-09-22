@@ -1,0 +1,124 @@
+
+
+class game:
+    def __init__(self):
+        self.N = 0
+        self.my_list = []
+        self.validation = []
+
+    def introduce_number_of_cards(self):
+        while (True):
+            self.N = input("Enter the number of card :")
+            if self.N.isdigit() and 0 < int(self.N) < 100:
+                break
+            print("The number must be in ]0 - 100[")
+
+    def introduce_the_cards(self):
+        print("1 - The credit number must begin by 4,5 or 6")
+        print("2 - The credit number must contain exactly 16 digits")
+        print("3 - The credit number may have digits in groups of 4 , separated by one hyphen - ")
+        print("4 - The credit number must NOT have 4 or more consecutive repeated digits.")
+        for i in range(int(self.N)):
+            ch = input("Enter credit number number  :")
+            self.my_list.append(ch)
+
+    def verify_card_begin(self,x):
+        # Check if the card number start with 4,5 or 6
+        if (x[0] == "4"):
+            return True
+        if (x[0] == "5"):
+            return True
+        if (x[0] == "6"):
+            return True
+        return False
+
+    def verify_digit_number(self,x):
+        # Chek if the card number has the form of 16 digit
+        if (len(x) == 16):
+            if x.isdigit():
+                print("X is digit")
+                return True
+            else:
+                return False
+        # Chek if the card number has this form xxxx-xxxx-xxxx-xxxx
+        elif len(x) == 19:
+            print("x = 19")
+            print(x[4])
+            if x[4] == '-' and x[9] == '-' and x[14] == '-':
+                print("contain -")
+                x1 = x.replace('-', '')
+                print("X1 = ",x1)
+                if x1.isdigit():
+                    print("X1 is digit")
+                    return True
+                else:
+                    return False
+            else:
+                return False
+        else:
+            return False
+
+    def verify_consicutive_repeated_digit(self,x):
+
+        # if the card number has this form xxxx-xxxx-xxxx-xxxx we remove "-"
+        x1 = x.replace('-', '')
+        for i in range(len(x1)-1):
+            k = 0
+            j = i + 1
+            test = True
+            print("check i : ",i)
+            while (test == True):
+                print("check j : ",j)
+                if (x1[i] == x1[j]) and (k<3):
+                    k = k + 1
+                    test = True
+                    j = j + 1
+                    print("check k : ",k)
+                else:
+                    j = j + 1
+                    test = False
+                if j == len(x1)-1:
+                    break
+                if k == 3:
+                    break
+
+            if k >= 3:
+                return False
+        return True
+
+    def validation_of_credit_cards(self):
+        for i in range(len(self.my_list)):
+            X = self.my_list[i]
+            if self.verify_card_begin(X) and self.verify_digit_number(X):
+                if self.verify_consicutive_repeated_digit(X):
+                    self.validation.append("Valid")
+                else:
+                    self.validation.append("Invalid")
+            else:
+                self.validation.append("Invalid")
+
+    def result(self):
+        msg_number_credit_card = " # "
+        msg_credit_card = "            The credit card          "
+        msg_validation = "  Validity  "
+     #   print(msg_number_credit_card, "|", msg_credit_card, "|", msg_validation)
+        for i in range(len(self.my_list)):
+            k = len(msg_credit_card) - len(self.my_list[i])
+            ch = ""
+            for j in range(k):
+                ch = ch + " "
+           # print(" ",i, self.my_list[i], ch, "|", self.validation[i])
+            print(i,  " ", self.validation[i])
+
+
+g = game()
+g.introduce_number_of_cards()
+g.introduce_the_cards()
+g.validation_of_credit_cards()
+g.result()
+
+
+
+
+
+
